@@ -1,5 +1,6 @@
 package mszynkiewicz.mail;
 
+import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -17,6 +18,8 @@ import javax.jms.TextMessage;
  * Date: 19.03.13
  */
 public class QueueFeeder {
+    private static final Logger logger = Logger.getLogger(QueueFeeder.class);
+
     private static JmsTemplate messageSender;
 
     @BeforeClass
@@ -37,5 +40,6 @@ public class QueueFeeder {
                 return message;
             }
         });
+        logger.info("sent message");
     }
 }
