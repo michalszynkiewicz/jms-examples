@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jndi="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+    <bean class="org.springframework.jms.core.JmsTemplate">
+        <property name="pubSubDomain" value="true"/>
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestinationName" value="${topic.name}"/>
+    </bean>
+    <jndi:jndi-lookup jndi-name="ConnectionFactory"
+                      id="connectionFactory"
+                      expected-type="javax.jms.ConnectionFactory">
+        <jndi:environment>
+            java.naming.provider.url=${java.naming.provider.url}
+            java.naming.factory.url.pkgs=${java.naming.factory.url.pkgs}
+            java.naming.factory.initial=${java.naming.factory.initial}
+        </jndi:environment>
+    </jndi:jndi-lookup>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="jms.properties"/>
+    </bean>
+</beans>

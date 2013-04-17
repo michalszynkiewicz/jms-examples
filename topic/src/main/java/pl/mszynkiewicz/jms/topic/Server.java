@@ -1,4 +1,4 @@
-package mszynkiewicz.mail;
+package pl.mszynkiewicz.jms.topic;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

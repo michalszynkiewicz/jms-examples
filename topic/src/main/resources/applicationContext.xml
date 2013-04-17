@@ -8,11 +8,23 @@
        http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd
        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-    <context:component-scan base-package="mszynkiewicz.mail.service"/>
+    <context:component-scan base-package="pl.mszynkiewicz.jms"/>
 
-    <jms:listener-container connection-factory="connectionFactory">
-        <jms:listener destination="${queue.name}" ref="mailMessageListener"/>
+    <jms:listener-container connection-factory="connectionFactory" acknowledge="transacted" destination-type="topic">
+        <jms:listener destination="${topic.name}" ref="greaterThan100MessageListener" selector="number &gt; 100"/>
+        <jms:listener destination="${topic.name}" ref="notGreaterThan100MessageListener" selector="number &lt;= 100"/>
+        <jms:listener destination="${topic.name}" ref="allMessageListener"/>
     </jms:listener-container>
+
+    <bean id="greaterThan100MessageListener" class="pl.mszynkiewicz.jms.topic.RespondingMessageListener">
+        <property name="selector" value="number &gt; 100"/>
+    </bean>
+
+    <bean id="notGreaterThan100MessageListener" class="pl.mszynkiewicz.jms.topic.RespondingMessageListener">
+        <property name="selector" value="number &lt;= 100"/>
+    </bean>
+
+    <bean id="allMessageListener" class="pl.mszynkiewicz.jms.topic.RespondingMessageListener"/>
 
     <jndi:jndi-lookup jndi-name="ConnectionFactory"
                       id="connectionFactory"

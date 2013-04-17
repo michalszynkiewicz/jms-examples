@@ -1,10 +1,10 @@
-mail-service
+jms-examples
 ============
 
 Notification sender which reads messages from a JMS queue.
 ------------
 
-To run the application you need HornetQ server running with queue mailSenderQueue defined and JNDI enabled.
+To run the application you need HornetQ server running with queue exampleQueue defined and JNDI enabled.
 You can customize JNDI settings and queue name in jms.properties file.
 
 If you use linux, you can use installHornetq.sh script to download and initialize the HornetQ server.
@@ -18,4 +18,6 @@ To run the application either:
  - build maven project:<br/>
     <code>mvn clean install</code><br/>
    and run mail-service jar from target/bin:<br/>
-    <code>java -jar target/bin/mail-service-1.0-SNAPSHOT.jar</code>
+    <code>java -jar target/bin/<the-jar-for-module-that-you-want-to-run>.jar</code>
+
+In case of any problems or questions feel free to contact me at: michal.l.szynkiewicz@gmail.com

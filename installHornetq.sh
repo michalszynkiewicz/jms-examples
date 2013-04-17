@@ -7,19 +7,23 @@ pushd \"\${HORNETQ_DIR}/bin\"
 ./run.sh
 popd
 "
-MAIL_QUEUE="    <queue name=\"mailSenderQueue\">\n		<entry name=\"\/queue\/mailSenderQueue\"\/>\n	<\/queue>"
-
 
 HORNET_NAME="hornetq-2.2.14.Final"
 HORNET_RUN_SCRIPT="${HORNET_NAME}/runHornetQ.sh"
-wget "http://downloads.jboss.org/hornetq/${HORNET_NAME}.zip"
+
+if [[ $# > 0 && $1 == "noDownload" ]]
+then
+   echo "Skipping download"
+else
+   wget "http://downloads.jboss.org/hornetq/${HORNET_NAME}.zip"
+fi
+
 unzip "${HORNET_NAME}.zip"
 
 echo "${RUN_HORNET}" > ${HORNET_RUN_SCRIPT}
 chmod +x ${HORNET_RUN_SCRIPT}
 
-HORNET_JMS_CONFIGURATION="${HORNET_NAME}/config/stand-alone/non-clustered/hornetq-jms.xml"
-END_OF_CONFIGURATION="<\/configuration>"
-HORNET_JMS_CONF_TEMP_FILE="/tmp/hornetq-jms-`date`.xml"
-sed "s/${END_OF_CONFIGURATION}/${MAIL_QUEUE}\n&/g" "${HORNET_JMS_CONFIGURATION}" > "${HORNET_JMS_CONF_TEMP_FILE}"
-mv "${HORNET_JMS_CONF_TEMP_FILE}" "${HORNET_JMS_CONFIGURATION}"
+HORNET_JMS_CONFIGURATION_DIR="${HORNET_NAME}/config/stand-alone/non-clustered/"
+cp conf/* "${HORNET_JMS_CONFIGURATION_DIR}"
+
+

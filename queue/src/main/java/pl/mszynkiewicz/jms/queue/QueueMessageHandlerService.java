@@ -1,4 +1,4 @@
-package mszynkiewicz.mail.service;
+package pl.mszynkiewicz.jms.queue;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
  * Date: 18.03.13
  */
 @Service
-public class MailSenderService {
-    private static final Logger logger = Logger.getLogger(MailSenderService.class);
+public class QueueMessageHandlerService {
+    private static final Logger logger = Logger.getLogger(QueueMessageHandlerService.class);
 
-    public void send(String address, String content) {
+    public void handle(String address, String content) {
         logger.info("should send message: " + content + " to: " + address);
     }
 }

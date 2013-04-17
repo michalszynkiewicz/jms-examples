@@ -1,4 +1,4 @@
-package mszynkiewicz.mail.service;
+package pl.mszynkiewicz.jms.queue;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +14,20 @@ import javax.jms.TextMessage;
  * Date: 18.03.13
  */
 @Service
-public class MailMessageListener implements MessageListener {
+public class QueueMessageListener implements MessageListener {
 
-    private static final Logger logger = Logger.getLogger(MailMessageListener.class);
+    private static final Logger logger = Logger.getLogger(QueueMessageListener.class);
+
+    private boolean failOnMessage = false;
 
     @Autowired
-    private MailSenderService mailSenderService;
+    private QueueMessageHandlerService messageHandlerService;
 
     @Override
     public void onMessage(Message message) {
+        if (failOnMessage) {
+            throw new RuntimeException("Intentional failure. To make app handle messages correctly, use JMX");
+        }
         if ((message instanceof TextMessage)) {
             handleMessage((TextMessage) message);
         } else {
@@ -34,9 +39,13 @@ public class MailMessageListener implements MessageListener {
         try {
             String address = message.getStringProperty("address");
             String content = message.getText();
-            mailSenderService.send(address, content);
+            messageHandlerService.handle(address, content);
         } catch (JMSException jmsException) {
             logger.error("Error reading message", jmsException);
         }
+    }
+
+    public void setFailOnMessage(boolean failOnMessage) {
+        this.failOnMessage = failOnMessage;
     }
 }
