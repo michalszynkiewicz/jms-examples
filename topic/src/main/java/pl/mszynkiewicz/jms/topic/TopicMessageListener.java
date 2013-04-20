@@ -11,9 +11,9 @@ import javax.jms.TextMessage;
  * Author: Michal Szynkiewicz, michal.l.szynkiewicz@gmail.com
  * Date: 18.03.13
  */
-public class RespondingMessageListener implements MessageListener {
+public class TopicMessageListener implements MessageListener {
 
-    private static final Logger logger = Logger.getLogger(RespondingMessageListener.class);
+    private static final Logger logger = Logger.getLogger(TopicMessageListener.class);
 
     private String selector;
 

@@ -16,15 +16,15 @@
         <jms:listener destination="${topic.name}" ref="allMessageListener"/>
     </jms:listener-container>
 
-    <bean id="greaterThan100MessageListener" class="pl.mszynkiewicz.jms.topic.RespondingMessageListener">
+    <bean id="greaterThan100MessageListener" class="pl.mszynkiewicz.jms.topic.TopicMessageListener">
         <property name="selector" value="number &gt; 100"/>
     </bean>
 
-    <bean id="notGreaterThan100MessageListener" class="pl.mszynkiewicz.jms.topic.RespondingMessageListener">
+    <bean id="notGreaterThan100MessageListener" class="pl.mszynkiewicz.jms.topic.TopicMessageListener">
         <property name="selector" value="number &lt;= 100"/>
     </bean>
 
-    <bean id="allMessageListener" class="pl.mszynkiewicz.jms.topic.RespondingMessageListener"/>
+    <bean id="allMessageListener" class="pl.mszynkiewicz.jms.topic.TopicMessageListener"/>
 
     <jndi:jndi-lookup jndi-name="ConnectionFactory"
                       id="connectionFactory"
